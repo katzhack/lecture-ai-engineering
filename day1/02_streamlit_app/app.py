@@ -46,12 +46,16 @@ def load_model():
 pipe = llm.load_model()
 
 # --- Streamlit アプリケーション ---
-st.title("🤖 Gemma 2 Chatbot with Feedback")
+# st.title("🤖 Gemma 2 Chatbot with Feedback")
+st.title(":sunglasses: _Gemma 2_ :blue[Chatbot] with Feedback")
+
 st.write("Gemmaモデルを使用したチャットボットです。回答に対してフィードバックを行えます。")
 st.markdown("---")
 
 # --- サイドバー ---
-st.sidebar.title("ナビゲーション")
+# st.sidebar.title("ナビゲーション")
+st.sidebar.title(":computer: :blue[_ナビゲーション_]")
+
 # セッション状態を使用して選択ページを保持
 if 'page' not in st.session_state:
     st.session_state.page = "チャット" # デフォルトページ
@@ -78,4 +82,5 @@ elif st.session_state.page == "サンプルデータ管理":
 
 # --- フッターなど（任意） ---
 st.sidebar.markdown("---")
-st.sidebar.info("開発者: [Your Name]")
+# st.sidebar.info("開発者: [Your Name]")
+st.sidebar.info("開発者: :blue[_katzhack_]")
