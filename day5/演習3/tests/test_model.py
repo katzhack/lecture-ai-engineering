@@ -17,6 +17,10 @@ DATA_PATH = os.path.join(os.path.dirname(__file__), "../data/Titanic.csv")
 MODEL_DIR = os.path.join(os.path.dirname(__file__), "../models")
 MODEL_PATH = os.path.join(MODEL_DIR, "titanic_model.pkl")
 
+# 宿題用モデルパス
+MODEL_DIR_2 = os.path.join(os.path.dirname(__file__), "../../演習2/models")
+MODEL_PATH_2 = os.path.join(MODEL_DIR_2, "titanic_model.pkl")
+
 
 @pytest.fixture
 def sample_data():
@@ -102,6 +106,16 @@ def train_model(sample_data, preprocessor):
     return model, X_test, y_test
 
 
+@pytest.fixture
+def load_gen2_model(path=MODEL_PATH_2):
+    """★★★ 演習2のモデルをロードする (宿題用) ★★★"""
+
+    """モデルを読み込む"""
+    with open(path, "rb") as f:
+        model = pickle.load(f)
+    return model
+
+
 def test_model_exists():
     """モデルファイルが存在するか確認"""
     if not os.path.exists(MODEL_PATH):
@@ -121,6 +135,26 @@ def test_model_accuracy(train_model):
     assert accuracy >= 0.75, f"モデルの精度が低すぎます: {accuracy}"
 
 
+def test_model_accuracy_generation(train_model, load_gen2_model):
+    """★★★ モデルの精度を検証 (演習2のモデルと比較) ★★★"""
+    model, X_test, y_test = train_model
+    gen2_model = load_gen2_model
+
+    # 演習3のモデルの精度を取得
+    y_pred = model.predict(X_test)
+    accuracy = accuracy_score(y_test, y_pred)
+
+    # 演習2のモデルの精度を取得
+    gen2_y_pred = gen2_model.predict(X_test)
+    gen2_accuracy = accuracy_score(y_test, gen2_y_pred)
+
+    # それぞれのモデルの精度を表示
+    print(f"演習2のモデルの精度: {gen2_accuracy}, 演習3モデルの精度: {accuracy}")
+
+    assert gen2_accuracy >= 0.75, f"演習2のモデルの精度が低すぎます: {gen2_accuracy}"
+    assert accuracy >= 0.75, f"演習3のモデルの精度が低すぎます: {accuracy}"
+
+
 def test_model_inference_time(train_model):
     """モデルの推論時間を検証"""
     model, X_test, _ = train_model
@@ -134,6 +168,36 @@ def test_model_inference_time(train_model):
 
     # 推論時間が1秒未満であることを確認
     assert inference_time < 1.0, f"推論時間が長すぎます: {inference_time}秒"
+
+
+def test_model_inference_time_generation(train_model, load_gen2_model):
+    """★★★ モデルの推論時間を検証 (演習2のモデルと比較) ★★★"""
+    model, X_test, _ = train_model
+    gen2_model = load_gen2_model
+
+    # 演習3のモデルの推論時間を計測
+    start_time = time.time()
+    model.predict(X_test)
+    end_time = time.time()
+    inference_time = end_time - start_time
+
+    # 演習2のモデルの推論時間を計測
+    start_time_gen2 = time.time()
+    gen2_model.predict(X_test)
+    end_time_gen2 = time.time()
+    gen2_inference_time = end_time_gen2 - start_time_gen2
+
+    # それぞれのモデルの推論時間を表示
+    print(
+        f"演習2のモデルの推論時間: {gen2_inference_time}, 演習3モデルの推論時間: {inference_time}"
+    )
+
+    assert (
+        gen2_inference_time < 1.0
+    ), f"演習2モデルの推論時間が長すぎます: {gen2_inference_time}秒"
+    assert (
+        inference_time < 1.0
+    ), f"演習3モデルの推論時間が長すぎます: {inference_time}秒"
 
 
 def test_model_reproducibility(sample_data, preprocessor):
