@@ -21,6 +21,7 @@ MODEL_PATH = os.path.join(MODEL_DIR, "titanic_model.pkl")
 MODEL_DIR_2 = os.path.join(os.path.dirname(__file__), "../../演習2/models")
 MODEL_PATH_2 = os.path.join(MODEL_DIR_2, "titanic_model.pkl")
 
+
 @pytest.fixture
 def sample_data():
     """テスト用データセットを読み込む"""
