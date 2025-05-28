@@ -17,6 +17,9 @@ DATA_PATH = os.path.join(os.path.dirname(__file__), "../data/Titanic.csv")
 MODEL_DIR = os.path.join(os.path.dirname(__file__), "../models")
 MODEL_PATH = os.path.join(MODEL_DIR, "titanic_model.pkl")
 
+# 宿題用モデルパス
+MODEL_DIR_2 = os.path.join(os.path.dirname(__file__), "../../演習2/models")
+MODEL_PATH_2 = os.path.join(MODEL_DIR_2, "titanic_model.pkl")
 
 @pytest.fixture
 def sample_data():
@@ -103,7 +106,7 @@ def train_model(sample_data, preprocessor):
 
 
 @pytest.fixture
-def load_gen2_model(path="../../演習2/models/titanic_model.pkl"):
+def load_gen2_model(path=MODEL_PATH_2):
     """★★★ 演習2のモデルをロードする (宿題用) ★★★"""
 
     """モデルを読み込む"""
