@@ -101,10 +101,10 @@ def train_model(sample_data, preprocessor):
 
     return model, X_test, y_test
 
+
 @pytest.fixture
 def load_gen2_model(path="../../演習2/models/titanic_model.pkl"):
-    """★★★ 演習2のモデルをロードする (宿題用) ★★★
-    """
+    """★★★ 演習2のモデルをロードする (宿題用) ★★★"""
 
     """モデルを読み込む"""
     with open(path, "rb") as f:
@@ -130,6 +130,7 @@ def test_model_accuracy(train_model):
     # Titanicデータセットでは0.75以上の精度が一般的に良いとされる
     assert accuracy >= 0.75, f"モデルの精度が低すぎます: {accuracy}"
 
+
 def test_model_accuracy_generation(train_model, load_gen2_model):
     """★★★ モデルの精度を検証 (演習2のモデルと比較) ★★★"""
     model, X_test, y_test = train_model
@@ -149,6 +150,7 @@ def test_model_accuracy_generation(train_model, load_gen2_model):
     assert gen2_accuracy >= 0.75, f"演習2のモデルの精度が低すぎます: {gen2_accuracy}"
     assert accuracy >= 0.75, f"演習3のモデルの精度が低すぎます: {accuracy}"
 
+
 def test_model_inference_time(train_model):
     """モデルの推論時間を検証"""
     model, X_test, _ = train_model
@@ -162,6 +164,7 @@ def test_model_inference_time(train_model):
 
     # 推論時間が1秒未満であることを確認
     assert inference_time < 1.0, f"推論時間が長すぎます: {inference_time}秒"
+
 
 def test_model_inference_time_generation(train_model, load_gen2_model):
     """★★★ モデルの推論時間を検証 (演習2のモデルと比較) ★★★"""
@@ -181,10 +184,17 @@ def test_model_inference_time_generation(train_model, load_gen2_model):
     gen2_inference_time = end_time_gen2 - start_time_gen2
 
     # それぞれのモデルの推論時間を表示
-    print(f"演習2のモデルの推論時間: {gen2_inference_time}, 演習3モデルの推論時間: {inference_time}")
+    print(
+        f"演習2のモデルの推論時間: {gen2_inference_time}, 演習3モデルの推論時間: {inference_time}"
+    )
 
-    assert gen2_inference_time < 1.0, f"演習2モデルの推論時間が長すぎます: {gen2_inference_time}秒"
-    assert inference_time < 1.0, f"演習3モデルの推論時間が長すぎます: {inference_time}秒"
+    assert (
+        gen2_inference_time < 1.0
+    ), f"演習2モデルの推論時間が長すぎます: {gen2_inference_time}秒"
+    assert (
+        inference_time < 1.0
+    ), f"演習3モデルの推論時間が長すぎます: {inference_time}秒"
+
 
 def test_model_reproducibility(sample_data, preprocessor):
     """モデルの再現性を検証"""
